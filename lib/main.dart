@@ -8,7 +8,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:jellycollapse/pushweb.dart' show pusWeb;
+import 'package:jellycollapse/pushweb.dart' show WebViewScreenPUSH, pusWeb;
 import 'package:jellycollapse/tokenhandler.dart' show getFcmToken;
 
 import 'package:package_info_plus/package_info_plus.dart';
@@ -597,43 +597,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       debugPrint("Ошибка при инициализации данных: $e");
     }
   }
-  void loadToServerOlegTWO() async {
-    print("CONV DATA"+ConVData.toString());
-    final jsonData = {
-      "content": {
-        "af_data": "${ConVData}",
-        "af_id": "${FlyerId}",
-        "fb_app_name": "Jet4Bet",
-        "app_name": "Jet4Betv1",
-        "deep":deep,
-        "bundle_identifier": "com.jetbet.jetbet.jetbet",
-        "app_version": "1.0.0",
-        "apple_id": "6744022823",
-        "fcm_token": tokenload ?? "default_fcm_token",
-        "device_id": deviceId ?? "default_device_id",
-        "instance_id": instanceId ?? "default_instance_id",
-        "platform": platform ?? "unknown_platform",
-        "os_version": osVersion ?? "default_os_version",
-        "app_version": appVersion ?? "default_app_version",
-        "language": language ?? "en",
-        "timezone": timezone ?? "UTC",
-        "push_enabled": pushEnabled,
-        "useruid": "${FlyerId}",
-      },
-    };
 
-
-
-    // Отправка данных на сервер
-    await sendDataToServer(jsonData);
-
-    // Конвертируем в строку
-    final jsonString = jsonEncode(jsonData);
-
-    await webViewController!.evaluateJavascript(
-      source: "sendRawData(${jsonEncode(jsonString)});",
-    );
-  }
   void loadToServerOleg() async {
     print("CONV DATA"+ConVData.toString());
     final jsonData = {
@@ -645,7 +609,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
         "deep":deep,
         "bundle_identifier": "jellycollapse.jellycollapse.jellycollapse.jellycollapse",
         "app_version": "1.0.0",
-        "apple_id": "6744022823",
+        "apple_id": "6670176459",
         "fcm_token": tokenload ?? "default_fcm_token",
         "device_id": deviceId ?? "default_device_id",
         "instance_id": instanceId ?? "default_instance_id",
@@ -662,11 +626,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
 
     // Отправка данных на сервер
-    await sendDataToServer(jsonData);
+   await sendDataToServer(jsonData);
 
     // Конвертируем в строку
     final jsonString = jsonEncode(jsonData);
-
+    print("LOAD "+jsonString);
     await webViewController!.evaluateJavascript(
       source: "sendRawData(${jsonEncode(jsonString)});",
     );
@@ -711,7 +675,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
       };
 
       // Отправка данных на сервер
-      await sendDataToServer(jsonData);
+  //    await sendDataToServer(jsonData);
 
       // Конвертируем в строку
       final jsonString = jsonEncode(jsonData);
@@ -874,7 +838,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   void InitFlyer() {
     final AppsFlyerOptions options = AppsFlyerOptions(
       afDevKey: appsDevID,
-      appId: "6744022823",
+      appId: "6670176459",
       showDebug: true,
     );
 
@@ -958,7 +922,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
           print("Получен URI: $uri");
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => pusWeb(url: uri)),
+            MaterialPageRoute(builder: (context) => WebViewScreenPUSH(uri)),
                 (route) => false, // Удаляем все предыдущие экраны
           );
           // loadToServerOlegTWO();
